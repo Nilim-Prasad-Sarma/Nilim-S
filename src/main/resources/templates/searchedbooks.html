@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.css"
+	rel="stylesheet" />
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+	rel="stylesheet" />
+<title>Rent Book Application</title>
+<style type="text/css">
+.input-group .btn {
+	line-height: 18px;
+}
+
+.bookname {
+	color: black;
+	box-shadow: 0px 0px 20px whitesmoke;
+}
+
+.bookname:hover {
+	color: whitesmoke;
+	box-shadow: 0px 0px 10px white;
+	padding: 5px;
+	border-radius: 10px;
+	background-color: blue;
+}
+
+.head {
+	margin-left: 80px;
+}
+
+.bordered-div {
+	border: 0.1px solid lightgrey;
+	/* border-bottom: 0px; */
+	border-radius: 6px;
+	padding: 0px;
+	/* padding-bottom: 0px; */
+	margin-top: 10px;
+}
+
+.table {
+	margin-bottom: 0px !important;
+	/* border-radius: 6px; */
+	/* border-collapse: separate; */
+}
+
+.main-div {
+	border-top: 1px solid black;
+	margin-top: 20px;
+	width: 65%;
+}
+
+.head-background {
+	background-color: #E3F2FD;
+}
+</style>
+</head>
+<body>
+	<!-- search bar and button -->
+	<form th:action="@{/rent-book/searchBooks}" method="post">
+		<div class="row">
+			<div
+				class="input-group container col-md-6 justify-content-center mt-3">
+				<div class="form-outline">
+					<input type="text" name="bookName" class="form-control" /> <label
+						class="form-label">Search</label>
+				</div>
+				<button type="submit" class="btn btn-primary">
+					<i class="fas fa-search"></i>
+				</button>
+			</div>
+		</div>
+	</form>
+	<!-- search bar and button -->
+	<div class="container-fluid div1 row justify-content-center">
+		<div class="col-8 bordered-div">
+			<table class="table">
+				<thead class="head-background">
+					<tr>
+						<th>Sl. No.</th>
+						<th>Book Name</th>
+						<th>Author</th>
+						<th>Published By</th>
+						<th>Published Date</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr th:each="bookDetails:${showBooks}">
+						<td th:text="${bookDetails.slNo}"></td>
+						<td><a class="bookname" th:text="${bookDetails.bookName}"
+							th:href="@{'/rent-book/getBookDetails/' + ${bookDetails.slNo}}"></a></td>
+						<td th:text="${bookDetails.authorName}"></td>
+						<td th:text="${bookDetails.publishedBy}"></td>
+						<td th:text="${bookDetails.publishedDate}"></td>
+					</tr>
+
+				</tbody>
+			</table>
+			<nav aria-label="Page navigation example">
+				<ul class="pagination">
+					<li th:if="${currentPage != 0}" class="page-item"><a
+						th:href="@{'/rent-book/searchBooks/' + ${currentPage - 1}}"
+						class="page-link">Previous</a></li>
+					<li th:classappend="${currentPage== i-1?'active': ''}"
+						th:each="i : ${#numbers.sequence(1 , totalPages)}"
+						class="page-item"><a
+						th:href="@{'/rent-book/searchBooks/' + ${i - 1}}"
+						class="page-link"> <span th:text="${i}"></span>
+					</a></li>
+					<li th:if="${currentPage+1 != totalPages}" class="page-item"><a
+						th:href="@{'/rent-book/searchBooks/' + ${currentPage + 1}}"
+						class="page-link">Next</a></li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.js"></script>
+</body>
+</html>
